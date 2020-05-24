@@ -11,7 +11,6 @@ const controls = [
 
 const BuildControls = (props) => {
   const canOrder = props.price > 0;
-
   return (
     <div className={classes.BuildControls}>
       <p>
