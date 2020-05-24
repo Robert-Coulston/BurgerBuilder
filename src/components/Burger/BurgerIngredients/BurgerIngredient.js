@@ -36,6 +36,9 @@ class BurgerIngredient extends Component {
       case "salad":
         ingredient = <div className={classes.Salad}></div>;
         break;
+      case "empty":
+        ingredient = <div>Empty burger.... hmmm  not very tasty</div>;
+        break;      
       default: {
         ingredient = null;
         break;
