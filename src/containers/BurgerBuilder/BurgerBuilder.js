@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -15,9 +17,26 @@ class BurgerBuilder extends Component {
       salad: 0,
       bacon: 0,
       cheese: 0,
-      meat: 0
+      meat: 0,
     },
     totalPrice: 0,
+    purchasing: false,
+  };
+
+  purchaseHandler = () => {
+    const isPurchasing = true;
+    this.setState({ purchasing: isPurchasing });
+  };
+
+  purchaseCancelledHandler = () => {
+    const isPurchasing = false;
+    this.setState({ purchasing: isPurchasing });
+  };
+
+  purchaseContinueHandler = () => {
+    alert("You paid in BIT COIN.. thanks");
+    const isPurchasing = false;
+    this.setState({ purchasing: isPurchasing });
   };
 
   addIngredientHandler = (type) => {
@@ -61,17 +80,29 @@ class BurgerBuilder extends Component {
     console.log("BurgerBuilder");
 
     let disabledInfo = {};
-    Object.keys(this.state.ingredients).forEach((key,index) =>  {
-        disabledInfo[key] = this.state.ingredients[key] <= 0;
+    Object.keys(this.state.ingredients).forEach((key, index) => {
+      disabledInfo[key] = this.state.ingredients[key] <= 0;
     });
 
     return (
       <Fragment>
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={() => this.purchaseCancelledHandler()}
+        >
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            cancelled={() => this.purchaseCancelledHandler()}
+            purchased={() => this.purchaseContinueHandler()}
+          />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={(t) => this.addIngredientHandler(t)}
           ingredientSubtracted={(t) => this.subtractIngredientHandler(t)}
           disabled={disabledInfo}
+          price={this.state.totalPrice}
+          ordered={() => this.purchaseHandler()}
         />
       </Fragment>
     );
