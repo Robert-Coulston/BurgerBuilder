@@ -3,7 +3,6 @@ import classes from './BuildControl.module.css'
 
 const BuildControl = (props) => {
     console.log(props.label);
-    
     return (
         <div className={classes.BuildControl}>
             <div className={classes.Label}>{props.label}</div>
@@ -12,5 +11,4 @@ const BuildControl = (props) => {
         </div>
     )
 }
-
 export default BuildControl
