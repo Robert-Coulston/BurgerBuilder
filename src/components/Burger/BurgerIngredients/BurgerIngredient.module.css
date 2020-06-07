@@ -96,6 +96,14 @@
   border-radius: 20px;
 }
 
+.Empty {
+  width: 80%;
+  margin-left: 10%;
+  font-weight: bold;
+  background-color:yellow;
+  text-align: center;
+}
+
 .Salad {
   width: 85%;
   height: 7%;
