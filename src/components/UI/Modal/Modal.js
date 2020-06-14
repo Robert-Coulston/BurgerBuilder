@@ -5,7 +5,7 @@ import Backdrop from "../Backdrop/Backdrop";
 class Modal extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.show !== this.props.show) {
+    if (nextProps.show !== this.props.show || this.props.children !== nextProps.children) {
       return true;
     }
   }
@@ -18,7 +18,7 @@ class Modal extends Component {
   render() {
     return (
       <Fragment>
-        <Backdrop show={this.props.show} clearBackdrop={() => this.props.modalClosed()} />
+        <Backdrop show={this.props.show} clearBackdrop={() => this.props.modalClosed()} clicked={() => {this.props.modalClosed()}} />
         <div
           className={classes.Modal}
           style={{
