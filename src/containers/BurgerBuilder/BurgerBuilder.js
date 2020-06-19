@@ -20,7 +20,7 @@ class BurgerBuilder extends Component {
     totalPrice: 0,
     purchasing: false,
     loading: false,
-    error: false
+    error: false,
   };
 
   componentDidMount() {
@@ -38,30 +38,20 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    const order = this.BuildOrder();
+    console.log("[purchaseContinueHandler]");
+    console.log(this.props);
 
-    let isLoading = true;
-    this.setState({ loading: isLoading });
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        console.log(response);
-        //Simulate taking some time to place order
-        setTimeout(() => {
-          isLoading = false;
-          this.setState({ loading: isLoading });
-          const isPurchasing = false;
-          this.setState({ purchasing: isPurchasing });
-          this.loadIngredients();
-        }, 2000);
-      })
-      .catch((error) => {
-        console.log(error);
-        isLoading = false;
-        this.setState({ loading: isLoading });
-        const isPurchasing = false;
-        this.setState({ purchasing: isPurchasing });
-      });
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]))
+    }
+    queryParams.push('price=' + this.state.totalPrice);
+
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString 
+    });
   };
 
   addIngredientHandler = (type) => {
@@ -115,11 +105,15 @@ class BurgerBuilder extends Component {
       .get("/ingredients.json")
       .then((response) => {
         console.log("getting ingredients");
-        console.log(response);
-        this.setState({ ingredients: response.data });
+        // calculate the total initial price
+        var price = 0;
+        Object.keys(response.data).forEach((key, index) => {
+          price = price + INGREDIENT_PRICES[key] * response.data[key];
+        });
+        this.setState({ totalPrice: price, ingredients: response.data });
       })
       .catch((error) => {
-        this.setState({error: true})
+        this.setState({ error: true });
       });
   }
 
