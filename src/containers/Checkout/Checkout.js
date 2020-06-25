@@ -38,49 +38,7 @@ class Checkout extends Component {
     console.log("checkoutContinuedHandler", this.props);
 
     this.props.history.replace(this.props.match.url + "/contact-data");
-
-    // const order = this.BuildOrder();
-
-    // let isLoading = true;
-    // this.setState({ loading: isLoading });
-    // axios
-    //   .post("/orders.json", order)
-    //   .then((response) => {
-    //     console.log(response);
-    //     //Simulate taking some time to place order
-    //     setTimeout(() => {
-    //       isLoading = false;
-    //       this.setState({ loading: isLoading });
-    //       const isPurchasing = false;
-    //       this.setState({ purchasing: isPurchasing });
-    //       this.loadIngredients();
-    //     }, 2000);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     isLoading = false;
-    //     this.setState({ loading: isLoading });
-    //     const isPurchasing = false;
-    //     this.setState({ purchasing: isPurchasing });
-    //   });
   };
-
-  //   BuildOrder = () => {
-  //     return {
-  //       ingredients: this.state.ingredients,
-  //       price: this.state.price,
-  //       customer: {
-  //         name: "Robert Coulston",
-  //         address: {
-  //           street: "1 something street",
-  //           postCode: "2000",
-  //           country: "Australia",
-  //         },
-  //         email: "test@test.com",
-  //       },
-  //       deliveryMethod: "fast",
-  //     };
-  //   };
 
   render() {
     console.log("Checkout");
