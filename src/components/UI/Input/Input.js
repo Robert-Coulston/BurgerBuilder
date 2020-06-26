@@ -3,6 +3,13 @@ import classes from "./Input.module.css";
 
 const Input = (props) => {
   let inputElement = null;
+  const inputClasses = [classes.InputElement];
+
+  let messageElement = null;
+  if (props.invalid && props.shouldValidate) {
+    inputClasses.push(classes.Invalid);
+    messageElement = <p className={classes.ValidationError}>{props.errorMessage}</p>;
+  }
 
   console.log("[Input]", props);
 
@@ -11,7 +18,7 @@ const Input = (props) => {
       inputElement = (
         <input
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           name={props.elementName}
@@ -23,7 +30,7 @@ const Input = (props) => {
       inputElement = (
         <input
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           name={props.elementName}
@@ -36,7 +43,7 @@ const Input = (props) => {
       inputElement = (
         <select
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           name={props.elementName}
         >
           {props.elementConfig.options.map((option) => {
@@ -55,7 +62,7 @@ const Input = (props) => {
       inputElement = (
         <input
           onChange={props.changed}
-          className={classes.InputElement}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           name={props.elementName}
@@ -69,6 +76,7 @@ const Input = (props) => {
     <div>
       <label>{props.elementName}</label>
       {inputElement}
+      {messageElement}
     </div>
   );
 };
