@@ -1,8 +1,10 @@
-import * as actionTypes from "./actions";
+import * as actionTypes from "../actions/actionTypes";
+// import { updateObject } from "../../store/utility";
 
 const initialState = {
   ingredients: null,
   totalPrice: 0,
+  error: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -51,16 +53,34 @@ const subtractIngredientHandler = (state, type) => {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("REDUCER:", state, action);
+  console.log("BURGER BUILDER REDUCER:", state, action);
   switch (action.type) {
-    case "ADD_INGREDIENT":
-      return addIngredientHandler(state, action.payLoad.type);
+    case actionTypes.ADD_INGREDIENT:
+      return { ...state, ...addIngredientHandler(state, action.payLoad.type) };
     case actionTypes.SUBTRACT_INGREDIENT:
-      return subtractIngredientHandler(state, action.payLoad.type);
+      return {
+        ...state,
+        ...subtractIngredientHandler(state, action.payLoad.type),
+      };
     case actionTypes.SET_INGREDIENTS:
-      return { ...state, ingredients: action.ingredients };
+        // set the ingredients in the order for display
+        const sortOrderIngredients = {
+        ingredients: {
+          salad: action.ingredients.salad,
+          bacon: action.ingredients.bacon,
+          cheese: action.ingredients.cheese,
+          meat: action.ingredients.meat,
+        },
+      };
+      return {
+        ...state,
+        ...sortOrderIngredients,
+        error: false,
+      };
     case actionTypes.SET_TOTALPRICE:
       return { ...state, totalPrice: action.totalPrice };
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return { ...state, error: action.error };
 
     default:
       return state;

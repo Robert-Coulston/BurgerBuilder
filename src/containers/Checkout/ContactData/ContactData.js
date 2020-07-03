@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import classes from "./ContactData.module.css";
 import { withRouter } from "react-router";
-import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import Button from "../../../components/UI/Button/Button";
 import { connect } from "react-redux";
+import * as actionCreators from "../../../store/actions/index";
+import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+import axios from "../../../axios-orders";
+
 
 class ContactData extends Component {
   state = {
@@ -93,13 +96,12 @@ class ContactData extends Component {
           ],
           placeholder: "Your delivery method",
         },
-        value: "",
+        value: "fastest",
         valid: true,
         touched: false,
         errorMessage: "",
       },
     },
-    loading: false,
     formIsvalid: false,
   };
 
@@ -113,29 +115,29 @@ class ContactData extends Component {
     console.log(this.props);
 
     const order = this.BuildOrder();
+    this.props.onPurchaseBurger(order);
 
-    let isLoading = true;
-    this.setState({ loading: isLoading });
+    // let isLoading = true;
+    // this.setState({ loading: isLoading });
 
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        console.log(response);
-        //Simulate taking some time to place order
-        setTimeout(() => {
-          isLoading = false;
-          this.setState({ loading: isLoading });
+    // axios.post("/orders.json", order)
+    //   .then((response) => {
+    //     console.log(response);
+    //     //Simulate taking some time to place order
+    //     setTimeout(() => {
+    //       isLoading = false;
+    //       this.setState({ loading: isLoading });
 
-          this.props.history.push({
-            pathname: "/",
-          });
-        }, 2000);
-      })
-      .catch((error) => {
-        console.log(error);
-        isLoading = false;
-        this.setState({ loading: isLoading });
-      });
+    //       this.props.history.push({
+    //         pathname: "/",
+    //       });
+    //     }, 2000);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     isLoading = false;
+    //     this.setState({ loading: isLoading });
+    //   });
   };
 
   BuildOrder = () => {
@@ -292,7 +294,7 @@ class ContactData extends Component {
       </form>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -308,9 +310,17 @@ class ContactData extends Component {
 const mapStateToProps = (state) => {
   console.log("mapStateToProps", state);
   return {
-    ingredients: state.ingredients,
-    price: state.totalPrice,
+    ingredients: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    loading: state.order.loading
   };
 };
 
-export default connect(mapStateToProps)(withRouter(ContactData));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onPurchaseBurger: (orderData) =>
+      dispatch(actionCreators.purchaseBurger(orderData)),
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(withRouter(ContactData), axios));
