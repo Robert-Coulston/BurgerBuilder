@@ -8,19 +8,15 @@ import { connect } from "react-redux";
 class Checkout extends Component {
   
   checkoutCancelledHandler = () => {
-    console.log(this.props);
     this.props.history.goBack();
   };
 
   checkoutContinuedHandler = () => {
-    console.log("checkoutContinuedHandler", this.props);
 
     this.props.history.replace(this.props.match.url + "/contact-data");
   };
 
   render() {
-    console.log("Checkout");
-    console.log(this.props);
 
     let summary = <Redirect to="/" />;
     if (this.props.ingredients) {
@@ -47,7 +43,6 @@ class Checkout extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps", state);
   return {
     ingredients: state.burgerBuilder.ingredients,
     purchased: state.order.purchased

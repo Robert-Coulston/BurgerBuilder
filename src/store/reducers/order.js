@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../../store/utility";
+import { updateObject } from "../../Shared/utility";
 
 const initialState = {
   orders: [],
@@ -9,7 +9,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("ORDER REDUCER:", state, action);
   switch (action.type) {
     case actionTypes.PURCHASE_INIT:
       return updateObject(state, { purchased: false });

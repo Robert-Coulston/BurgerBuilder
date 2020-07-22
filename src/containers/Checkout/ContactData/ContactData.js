@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import * as actionCreators from "../../../store/actions/index";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../../axios-orders";
-
+import { checkValidity } from "../../../Shared/validationCheck";
 
 class ContactData extends Component {
   state = {
@@ -105,14 +105,8 @@ class ContactData extends Component {
     formIsvalid: false,
   };
 
-  componendDidMount() {
-    console.log("[ContactData] componendDidMount");
-  }
-
   orderHandler = (event) => {
     event.preventDefault();
-    console.log("[ContactData]");
-    console.log(this.props);
 
     const order = this.BuildOrder();
     this.props.onPurchaseBurger(order, this.props.token);
@@ -152,7 +146,7 @@ class ContactData extends Component {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: formData,
-      userId: this.props.userId
+      userId: this.props.userId,
     };
   };
 
@@ -182,7 +176,7 @@ class ContactData extends Component {
 
     const validity =
       targetField.validation && targetField.touched
-        ? this.checkValidity(targetField.value, targetField.validation)
+        ? checkValidity(targetField.value, targetField.validation)
         : { isValid: true, errorMessage: "" };
 
     targetField.valid = validity.isValid;
@@ -190,58 +184,8 @@ class ContactData extends Component {
 
     eventOrderForm[event.target.name] = targetField;
 
-    console.log(targetField);
-
-    console.log("[inputChangedHandler]");
-    console.log(eventOrderForm);
-
     const isFormValid = this.IsFormValid(eventOrderForm);
-    console.log("IsFormValid", isFormValid);
-
     this.setState({ orderForm: eventOrderForm, formIsvalid: isFormValid });
-  };
-
-  checkValidity = (value, rules) => {
-    let response = {
-      isValid: true,
-      errorMessage: "",
-    };
-
-    console.log(rules.required);
-
-    if (rules.required && response.isValid) {
-      response.isValid = value.trim() !== "";
-      if (!response.isValid) {
-        response.errorMessage = "This is a required field";
-      }
-    }
-
-    if (rules.doesNotIncludeNumbers && response.isValid) {
-      response.isValid = !this.hasNumber(value);
-      if (!response.isValid) {
-        response.errorMessage = "This field must not contain numbers";
-      }
-    }
-
-    if (rules.minLength && response.isValid) {
-      response.isValid = value.length >= rules.minLength;
-      if (!response.isValid) {
-        response.errorMessage = `This field has a minimum length of ${rules.minLength}`;
-      }
-    }
-
-    if (rules.maxLength && response.isValid) {
-      response.isValid = value.length <= rules.maxLength;
-      if (!response.isValid) {
-        response.errorMessage = `This field has a maximum length of ${rules.maxLength}`;
-      }
-    }
-
-    return response;
-  };
-
-  hasNumber = (stringHasNumber) => {
-    return /\d/.test(stringHasNumber);
   };
 
   IsFormValid = (eventOrderForm) => {
@@ -309,13 +253,12 @@ class ContactData extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps", state);
   return {
     ingredients: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     token: state.auth.token,
-    userId: state.auth.userId
+    userId: state.auth.userId,
   };
 };
 
@@ -326,4 +269,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(withRouter(ContactData), axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(withRouter(ContactData), axios));

@@ -1,5 +1,6 @@
 import * as actionTypes from "../actions/actionTypes";
-import { updateObject } from "../../store/utility";
+import { updateObject } from "../../Shared/utility";
+
 
 const initialState = {
   token: null,
@@ -51,7 +52,6 @@ const authSetRedirectPath = (state, action) => {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("AUTH REDUCER:", state, action);
   switch (action.type) {
     case actionTypes.AUTH_START:
       return authStart(state, action);

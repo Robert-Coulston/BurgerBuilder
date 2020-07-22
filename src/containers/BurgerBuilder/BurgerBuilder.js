@@ -35,8 +35,6 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    console.log("[purchaseContinueHandler]");
-    console.log(this.props);
 
     // const queryParams = [];
     // for (let i in this.props.ingredients) {
@@ -61,9 +59,6 @@ class BurgerBuilder extends Component {
   }
 
   render() {
-    console.log("BurgerBuilder");
-    console.log(this.props.ingredients, this.props.totalPrice);
-
     let disabledInfo = {};
     let orderSummary = null;
     let burger = this.props.error ? <p>Ingredients can't be loaded !!</p> : <Spinner />;
@@ -116,7 +111,6 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps", state);
   return {
     ingredients: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
@@ -126,7 +120,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log("mapDispatchToProps", dispatch);
   return {
     onAddIngredient: (ingredientType) =>
       dispatch(actionCreators.addIngredient(ingredientType)),

@@ -6,6 +6,7 @@ import * as actionCreators from "../../store/actions/index";
 import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { checkValidity } from "../../Shared/validationCheck";
 
 class Auth extends Component {
   state = {
@@ -42,12 +43,12 @@ class Auth extends Component {
       },
     },
     formIsvalid: false,
-    isSignUp: true
+    isSignUp: true,
   };
 
   componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
-      this.props.onSetAuthRedirectPath('/');
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+      this.props.onSetAuthRedirectPath("/");
     }
   }
 
@@ -61,7 +62,7 @@ class Auth extends Component {
 
     const validity =
       targetField.validation && targetField.touched
-        ? this.checkValidity(targetField.value, targetField.validation)
+        ? checkValidity(targetField.value, targetField.validation)
         : { isValid: true, errorMessage: "" };
 
     targetField.valid = validity.isValid;
@@ -71,48 +72,6 @@ class Auth extends Component {
     const isFormValid = this.IsFormValid(authForm);
     this.setState({ controls: authForm, formIsvalid: isFormValid });
     this.props.onKeyInput();
-  };
-
-  checkValidity = (value, rules) => {
-    let response = {
-      isValid: true,
-      errorMessage: "",
-    };
-
-    console.log(rules.required);
-
-    if (rules.required && response.isValid) {
-      response.isValid = value.trim() !== "";
-      if (!response.isValid) {
-        response.errorMessage = "This is a required field";
-      }
-    }
-
-    if (rules.doesNotIncludeNumbers && response.isValid) {
-      response.isValid = !this.hasNumber(value);
-      if (!response.isValid) {
-        response.errorMessage = "This field must not contain numbers";
-      }
-    }
-
-    if (rules.minLength && response.isValid) {
-      response.isValid = value.length >= rules.minLength;
-      if (!response.isValid) {
-        response.errorMessage = `This field has a minimum length of ${rules.minLength}`;
-      }
-    }
-
-    if (rules.maxLength && response.isValid) {
-      response.isValid = value.length <= rules.maxLength;
-      if (!response.isValid) {
-        response.errorMessage = `This field has a maximum length of ${rules.maxLength}`;
-      }
-    }
-    return response;
-  };
-
-  hasNumber = (stringHasNumber) => {
-    return /\d/.test(stringHasNumber);
   };
 
   IsFormValid = (eventAuthForm) => {
@@ -128,7 +87,6 @@ class Auth extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    console.log("[AuthData]");
     this.props.onAuth(
       this.state.controls.email.value,
       this.state.controls.password.value,
@@ -145,10 +103,8 @@ class Auth extends Component {
   };
 
   render() {
-    console.log("Auth");
-
     if (this.props.isAuthenticated) {
-      return <Redirect to={this.props.authRedirectPath}/>
+      return <Redirect to={this.props.authRedirectPath} />;
     }
 
     const formElementsArray = [];
@@ -210,13 +166,12 @@ class Auth extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("mapStateToProps", state);
-  return {
+   return {
     loading: state.auth.loading,
     submitErrorMessage: state.auth.errorMessage,
     isAuthenticated: state.auth.token !== null,
     authRedirectPath: state.auth.authRedirectPath,
-    buildingBurger: state.burgerBuilder.building
+    buildingBurger: state.burgerBuilder.building,
   };
 };
 
@@ -225,7 +180,8 @@ const mapDispatchToProps = (dispatch) => {
     onAuth: (email, password, isSignUp) =>
       dispatch(actionCreators.auth(email, password, isSignUp)),
     onKeyInput: () => dispatch(actionCreators.authKeyInput()),
-    onSetAuthRedirectPath: (path) => dispatch(actionCreators.setAuthRedirectPath(path))
+    onSetAuthRedirectPath: (path) =>
+      dispatch(actionCreators.setAuthRedirectPath(path)),
   };
 };
 

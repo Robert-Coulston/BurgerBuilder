@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 
 class BurgerIngredient extends Component {
   render() {
-    console.log(`Buger ingredient ${this.props.type}`);
-    console.log(this.props); // key property is used internally only - not available for use in code.
 
     let ingredient = null;
 

@@ -1,5 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-// import { updateObject } from "../../store/utility";
 
 const initialState = {
   ingredients: null,
@@ -54,7 +53,6 @@ const subtractIngredientHandler = (state, type) => {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("BURGER BUILDER REDUCER:", state, action);
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
       return { ...state, ...addIngredientHandler(state, action.payLoad.type) };

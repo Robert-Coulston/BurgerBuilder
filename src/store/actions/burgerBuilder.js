@@ -49,14 +49,11 @@ export const initIngredients = (value) => {
     axios
     .get("/ingredients.json")
     .then((response) => {
-      console.log("getting ingredients");
-
       // calculate the total initial price
       var price = 0;
       Object.keys(response.data).forEach((key, index) => {
         price = price + INGREDIENT_PRICES[key] * response.data[key];
       });
-      console.log(response.data);
 
       dispatch(setIngredients(response.data));
       dispatch(setTotalPrice(price));
