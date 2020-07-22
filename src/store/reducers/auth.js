@@ -1,0 +1,73 @@
+import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../../store/utility";
+
+const initialState = {
+  token: null,
+  userId: null,
+  errorMessage: null,
+  loading: false,
+  authRedirectPath: "/",
+};
+
+const authStart = (state, action) => {
+  return updateObject(state, { error: false, loading: true });
+};
+
+const authSuccess = (state, action) => {
+  return updateObject(state, {
+    token: action.token,
+    userId: action.userId,
+    errorMessage: null,
+    loading: false,
+  });
+};
+
+const authFail = (state, action) => {
+  return updateObject(state, {
+    token: null,
+    userId: null,
+    errorMessage: action.errorMessage,
+    loading: false,
+  });
+};
+
+const authKeyInput = (state, action) => {
+  return updateObject(state, { errorMessage: null });
+};
+
+const authLogout = (state, action) => {
+  return updateObject(state, {
+    token: null,
+    userId: null,
+    errorMessage: null,
+    loading: false,
+  });
+};
+
+const authSetRedirectPath = (state, action) => {
+  return updateObject(state, {
+    authRedirectPath: action.authRedirectPath,
+  });
+};
+
+const reducer = (state = initialState, action) => {
+  console.log("AUTH REDUCER:", state, action);
+  switch (action.type) {
+    case actionTypes.AUTH_START:
+      return authStart(state, action);
+    case actionTypes.AUTH_SUCCESS:
+      return authSuccess(state, action);
+    case actionTypes.AUTH_FAIL:
+      return authFail(state, action);
+    case actionTypes.AUTH_KEYINPUT:
+      return authKeyInput(state, action);
+    case actionTypes.AUTH_LOGOUT:
+      return authLogout(state, action);
+    case actionTypes.AUTH_REDIRECT_PATH:
+      return authSetRedirectPath(state, action);
+    default:
+      return state;
+  }
+};
+
+export default reducer;

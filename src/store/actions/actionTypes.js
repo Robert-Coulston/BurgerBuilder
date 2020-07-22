@@ -1,3 +1,4 @@
+//Burger Builder
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const SUBTRACT_INGREDIENT = "SUBTRACT_INGREDIENT";
 export const SET_INGREDIENTS = "SET_INGREDIENTS";
@@ -12,4 +13,13 @@ export const PURCHASE_INIT = "PURCHASE_INIT";
 export const FETCH_ORDERS_START = "FETCH_ORDERS_START";
 export const FETCH_ORDERS_SUCCESS = "FETCH_ORDERS_SUCCESS";
 export const FETCH_ORDERS_FAILURE = "FETCH_ORDERS_FAILURE";
+
+//Authorise
+export const AUTH_START = "AUTH_START";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+export const AUTH_KEYINPUT = "AUTH_KEYINPUT";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";
+export const AUTH_REDIRECT_PATH = "AUTH_REDIRECT_PATH";
+
 

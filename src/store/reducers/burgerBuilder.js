@@ -5,13 +5,14 @@ const initialState = {
   ingredients: null,
   totalPrice: 0,
   error: false,
+  building: false
 };
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
   bacon: 0.25,
   cheese: 0.3,
-  meat: 1.25,
+  meat: 1.25
 };
 
 const setPrice = (state, type, updatedCount) => {
@@ -32,7 +33,7 @@ const addIngredientHandler = (state, type) => {
     updatedCount
   );
   const newPrice = oldPrice + priceValue;
-  return { totalPrice: newPrice, ingredients: updatedIngredients };
+  return { totalPrice: newPrice, ingredients: updatedIngredients, building: true }; // building means that ingredients have changed
 };
 
 const subtractIngredientHandler = (state, type) => {
@@ -48,7 +49,7 @@ const subtractIngredientHandler = (state, type) => {
     );
     const newPrice = oldPrice - priceValue;
 
-    return { totalPrice: newPrice, ingredients: updatedIngredients };
+    return { totalPrice: newPrice, ingredients: updatedIngredients, building: true }; // building means that ingredients have changed
   }
 };
 
@@ -76,6 +77,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         ...sortOrderIngredients,
         error: false,
+        building: false // reloading the page - have not yet added any ingredients
       };
     case actionTypes.SET_TOTALPRICE:
       return { ...state, totalPrice: action.totalPrice };
